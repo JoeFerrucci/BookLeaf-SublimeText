@@ -36,12 +36,11 @@ def get_all_files():
     return files
 
 
-def get_file_content(filepath, max_chars=1000):
-    """Get file content for searching and preview."""
+def get_file_content(filepath):
+    """Get full file content for searching and preview."""
     try:
         with open(filepath, "r", encoding="utf-8") as f:
-            content = f.read(max_chars)
-            return content if content else ""
+            return f.read()
     except Exception:
         return ""
 
@@ -63,7 +62,6 @@ class BookLeafCommand(sublime_plugin.WindowCommand):
         settings = get_settings()
         show_preview = settings.get("show_file_preview", True)
         preview_lines = settings.get("preview_max_lines", 3)
-        search_chars = settings.get("search_content_chars", 1000)
 
         # Build Quick Panel items
         self.items = []
@@ -77,7 +75,7 @@ class BookLeafCommand(sublime_plugin.WindowCommand):
 
         # Add existing files
         for filename, filepath, mtime in self.files:
-            content = get_file_content(filepath, search_chars) if show_preview else ""
+            content = get_file_content(filepath) if show_preview else ""
             preview = format_preview(content, preview_lines)
 
             # Format modification time
