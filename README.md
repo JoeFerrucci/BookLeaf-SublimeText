@@ -20,17 +20,30 @@ A Sublime Text 4 package for managing scratch notes and snippets as individual f
 ### Manual Installation
 
 1. Open Sublime Text's Packages folder (`Preferences > Browse Packages...`)
-2. Clone this repository: `git clone https://github.com/YOUR_USERNAME/BookLeaf-SublimeText.git BookLeaf`
+2. Clone this repository: `git clone https://github.com/JoeFerrucci/BookLeaf-SublimeText.git BookLeaf`
 
 ## Usage
 
-| Command | Shortcut | Description |
-|---------|----------|-------------|
-| BookLeaf: Open | `Cmd+Shift+B` | Open Quick Panel to search/create files |
-| BookLeaf: New File | - | Create a new scratch file |
-| BookLeaf: Search Contents | - | Search file contents |
-| BookLeaf: Delete File | - | Delete a scratch file |
-| BookLeaf: Open Storage Folder | - | Open storage folder in Finder |
+All commands are available via the Command Palette (`Cmd+Shift+P`):
+
+| Command | Description |
+|---------|-------------|
+| BookLeaf: Open | Open Quick Panel to search/create files |
+| BookLeaf: New File | Create a new scratch file |
+| BookLeaf: Search Contents | Search file contents |
+| BookLeaf: Delete File | Delete a scratch file |
+| BookLeaf: Open Storage Folder | Open storage folder in Finder |
+
+## Key Bindings
+
+No key bindings are enabled by default. To add one, open your user key bindings (`Preferences > Key Bindings`) and add:
+
+```json
+// If CMD+SHIFT+B is already tied to 'build' or something else use a chord (see below)
+{ "keys": ["super+shift+b"], "command": "book_leaf" }
+// Chord: Hold CMD+SHIFT and press B then L.
+{ "keys": ["super+shift+b", "super+shift+l"], "command": "book_leaf" }
+```
 
 ## Settings
 
@@ -59,7 +72,6 @@ Files are stored in: `~/Library/Application Support/Sublime Text/Packages/User/B
 ## Requirements
 
 - Sublime Text 4 (Build 4074+)
-- Python 3.8 (included with ST4)
 
 ## License
 

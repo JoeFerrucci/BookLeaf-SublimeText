@@ -1,3 +1,4 @@
 [
-    { "keys": ["super+shift+b"], "command": "book_leaf" }
+    // Uncomment to enable the default key binding:
+    // { "keys": ["super+shift+b"], "command": "book_leaf" }
 ]
