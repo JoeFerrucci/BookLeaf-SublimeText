@@ -11,5 +11,8 @@
     "show_file_preview": true,
 
     // Number of lines to show in preview
-    "preview_max_lines": 3
+    "preview_max_lines": 3,
+
+    // How many characters of file content to index for fuzzy search
+    "search_content_chars": 5000
 }

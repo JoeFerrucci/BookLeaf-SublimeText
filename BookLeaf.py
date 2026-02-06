@@ -36,18 +36,23 @@ def get_all_files():
     return files
 
 
-def get_file_preview(filepath, max_lines=3):
-    """Get the first few lines of a file for preview."""
+def get_file_content(filepath, max_chars=1000):
+    """Get file content for searching and preview."""
     try:
         with open(filepath, "r", encoding="utf-8") as f:
-            lines = []
-            for i, line in enumerate(f):
-                if i >= max_lines:
-                    break
-                lines.append(line.rstrip())
-            return " | ".join(lines) if lines else "(empty file)"
+            content = f.read(max_chars)
+            return content if content else ""
     except Exception:
-        return "(unable to read)"
+        return ""
+
+
+def format_preview(content, max_lines=3):
+    """Format content as a single-line preview for display."""
+    if not content:
+        return "(empty file)"
+    lines = [line.strip() for line in content.split("\n") if line.strip()]
+    preview_lines = lines[:max_lines]
+    return " | ".join(preview_lines) if preview_lines else "(empty file)"
 
 
 class BookLeafCommand(sublime_plugin.WindowCommand):
@@ -58,6 +63,7 @@ class BookLeafCommand(sublime_plugin.WindowCommand):
         settings = get_settings()
         show_preview = settings.get("show_file_preview", True)
         preview_lines = settings.get("preview_max_lines", 3)
+        search_chars = settings.get("search_content_chars", 1000)
 
         # Build Quick Panel items
         self.items = []
@@ -71,16 +77,19 @@ class BookLeafCommand(sublime_plugin.WindowCommand):
 
         # Add existing files
         for filename, filepath, mtime in self.files:
-            if show_preview:
-                preview = get_file_preview(filepath, preview_lines)
-            else:
-                preview = ""
+            content = get_file_content(filepath, search_chars) if show_preview else ""
+            preview = format_preview(content, preview_lines)
 
             # Format modification time
             mod_time = datetime.fromtimestamp(mtime).strftime("%Y-%m-%d %H:%M")
 
+            # ST4 Quick Panel only searches trigger field
+            # Include condensed content in trigger for fuzzy search
+            searchable = " ".join(content.split()) if content else ""
+            trigger_text = filename + "  " + searchable if searchable else filename
+
             self.items.append(sublime.QuickPanelItem(
-                trigger=filename,
+                trigger=trigger_text,
                 details=preview,
                 annotation=mod_time,
                 kind=(sublime.KIND_ID_COLOR_LIGHT, "B", "")
