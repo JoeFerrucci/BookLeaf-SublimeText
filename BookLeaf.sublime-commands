@@ -1,0 +1,22 @@
+[
+    {
+        "caption": "BookLeaf: Open",
+        "command": "book_leaf"
+    },
+    {
+        "caption": "BookLeaf: New File",
+        "command": "book_leaf_new"
+    },
+    {
+        "caption": "BookLeaf: Search Contents",
+        "command": "book_leaf_search"
+    },
+    {
+        "caption": "BookLeaf: Delete File",
+        "command": "book_leaf_delete"
+    },
+    {
+        "caption": "BookLeaf: Open Storage Folder",
+        "command": "book_leaf_open_folder"
+    }
+]

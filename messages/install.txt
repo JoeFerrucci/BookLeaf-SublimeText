@@ -1,0 +1,22 @@
+BookLeaf - Scratch Notes Manager
+================================
+
+Thanks for installing BookLeaf!
+
+Quick Start:
+- Press Cmd+Shift+B to open BookLeaf
+- Use Command Palette: "BookLeaf: Open"
+
+Commands:
+- BookLeaf: Open        - Browse and search your scratch files
+- BookLeaf: New File    - Create a new scratch file
+- BookLeaf: Search      - Search file contents
+- BookLeaf: Delete      - Delete a scratch file
+- BookLeaf: Open Folder - Open storage folder in Finder
+
+Settings:
+- Default extension: .md (configurable)
+- Storage: ~/Library/Application Support/Sublime Text/Packages/User/BookLeaf/
+
+To customize settings:
+Preferences > Package Settings > BookLeaf > Settings
