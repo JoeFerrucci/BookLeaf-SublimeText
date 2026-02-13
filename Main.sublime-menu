@@ -22,11 +22,13 @@
                             },
                             { "caption": "-" },
                             {
-                                "command": "open_file",
+                                "command": "edit_settings",
                                 "args": {
-                                    "file": "${packages}/BookLeaf/Default (OSX).sublime-keymap"
+                                    "base_file": "${packages}/BookLeaf/Default.sublime-keymap",
+                                    "user_file": "${packages}/User/Default (${platform}).sublime-keymap",
+                                    "default": "[\n\t$0\n]\n"
                                 },
-                                "caption": "Key Bindings – Example"
+                                "caption": "Key Bindings"
                             }
                         ]
                     }
