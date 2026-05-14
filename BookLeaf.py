@@ -81,13 +81,8 @@ class BookLeafCommand(sublime_plugin.WindowCommand):
             # Format modification time
             mod_time = datetime.fromtimestamp(mtime).strftime("%Y-%m-%d %H:%M")
 
-            # ST4 Quick Panel only searches trigger field
-            # Include condensed content in trigger for fuzzy search
-            searchable = " ".join(content.split()) if content else ""
-            trigger_text = filename + "  " + searchable if searchable else filename
-
             self.items.append(sublime.QuickPanelItem(
-                trigger=trigger_text,
+                trigger=filename,
                 details=preview,
                 annotation=mod_time,
                 kind=(sublime.KIND_ID_COLOR_LIGHT, "B", "")
@@ -157,46 +152,57 @@ class BookLeafSearchCommand(sublime_plugin.WindowCommand):
     """Search BookLeaf files by content."""
 
     def run(self):
-        self.files = get_all_files()
+        self.window.show_input_panel(
+            "Search content:",
+            "",
+            self.on_query,
+            None,
+            None
+        )
+
+    def on_query(self, query):
+        query = query.strip()
+        if not query:
+            return
+
+        files = get_all_files()
         self.matches = []
 
-        # Index all files with their content
-        for filename, filepath, mtime in self.files:
-            try:
-                with open(filepath, "r", encoding="utf-8") as f:
-                    content = f.read()
-                    # Get first line as preview
-                    first_line = content.split("\n")[0][:100] if content else "(empty)"
-                    self.matches.append({
-                        "filename": filename,
-                        "filepath": filepath,
-                        "content": content,
-                        "preview": first_line,
-                        "mtime": mtime
-                    })
-            except Exception:
-                continue
+        query_lower = query.lower()
+        for filename, filepath, mtime in files:
+            content = get_file_content(filepath)
+            if query_lower in content.lower():
+                # Find the first matching line for the preview
+                matching_line = next(
+                    (line.strip() for line in content.splitlines() if query_lower in line.lower()),
+                    ""
+                )
+                self.matches.append({
+                    "filename": filename,
+                    "filepath": filepath,
+                    "preview": matching_line,
+                    "mtime": mtime
+                })
 
-        # Build Quick Panel items
-        self.items = []
+        if not self.matches:
+            sublime.status_message("BookLeaf: No files matching \"" + query + "\"")
+            return
+
+        items = []
         for match in self.matches:
             mod_time = datetime.fromtimestamp(match["mtime"]).strftime("%Y-%m-%d %H:%M")
-            self.items.append(sublime.QuickPanelItem(
+            items.append(sublime.QuickPanelItem(
                 trigger=match["filename"],
                 details=match["preview"],
                 annotation=mod_time,
                 kind=(sublime.KIND_ID_COLOR_LIGHT, "B", "")
             ))
 
-        if not self.items:
-            sublime.status_message("BookLeaf: No files found")
-            return
-
         self.window.show_quick_panel(
-            self.items,
+            items,
             self.on_done,
             sublime.KEEP_OPEN_ON_FOCUS_LOST,
-            placeholder="Search file contents..."
+            placeholder="Select a file to open..."
         )
 
     def on_done(self, index):
