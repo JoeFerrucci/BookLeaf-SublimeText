@@ -1,0 +1,8 @@
+BookLeaf 1.1.0
+==============
+
+UX Improvements:
+
+- File list now shows clean filenames instead of garbled truncated content
+- Search Contents now uses a real substring match against file content
+  (type your query, press Enter, see only files that contain it)
