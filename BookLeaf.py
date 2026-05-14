@@ -81,13 +81,8 @@ class BookLeafCommand(sublime_plugin.WindowCommand):
             # Format modification time
             mod_time = datetime.fromtimestamp(mtime).strftime("%Y-%m-%d %H:%M")
 
-            # ST4 Quick Panel only searches trigger field
-            # Include condensed content in trigger for fuzzy search
-            searchable = " ".join(content.split()) if content else ""
-            trigger_text = filename + "  " + searchable if searchable else filename
-
             self.items.append(sublime.QuickPanelItem(
-                trigger=trigger_text,
+                trigger=filename,
                 details=preview,
                 annotation=mod_time,
                 kind=(sublime.KIND_ID_COLOR_LIGHT, "B", "")
