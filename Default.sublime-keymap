@@ -1,4 +1,7 @@
 [
     // Uncomment to enable the default key binding:
-    // { "keys": ["super+shift+b"], "command": "book_leaf" }
+    // { "keys": ["super+shift+b", "super+shift+l"], "command": "book_leaf" },
+    // { "keys": ["super+shift+b", "super+shift+n"], "command": "book_leaf_new" },
+    // { "keys": ["super+shift+b", "super+shift+s"], "command": "book_leaf_search" },
+    // { "keys": ["super+shift+b", "super+shift+d"], "command": "book_leaf_delete" }
 ]

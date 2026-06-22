@@ -1,0 +1,14 @@
+BookLeaf 1.2.0
+==============
+
+New File from Unsaved Buffer:
+
+- "New File" now detects if the active tab is an unsaved scratch buffer
+- If so, it saves that buffer's content into the new BookLeaf file in-place
+  instead of opening a second empty tab
+- Behavior is unchanged when the active view already has a file on disk
+
+Key Bindings:
+
+- Default.sublime-keymap now includes commented-out chord examples for all
+  commands (super+shift+b, then l/n/s/d) — uncomment to enable

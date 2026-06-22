@@ -112,10 +112,11 @@ class BookLeafNewCommand(sublime_plugin.WindowCommand):
     """Create a new BookLeaf scratch file."""
 
     def run(self):
+        self.source_view = self.window.active_view()
+
         settings = get_settings()
         date_format = settings.get("date_format", "%Y-%m-%d_%H%M%S")
 
-        # Generate default name with timestamp
         default_name = datetime.now().strftime(date_format)
 
         self.window.show_input_panel(
@@ -133,14 +134,23 @@ class BookLeafNewCommand(sublime_plugin.WindowCommand):
         settings = get_settings()
         extension = settings.get("default_extension", ".md")
 
-        # Add extension if not present
         if not os.path.splitext(name)[1]:
             name = name + extension
 
         storage_path = get_storage_path()
         filepath = os.path.join(storage_path, name)
 
-        # Create the file if it doesn't exist
+        # If the active view is unsaved, retarget it to the new file instead of
+        # opening a fresh tab — preserves existing buffer content.
+        view = self.source_view
+        if view and view.file_name() is None:
+            content = view.substr(sublime.Region(0, view.size()))
+            with open(filepath, "w", encoding="utf-8") as f:
+                f.write(content)
+            view.retarget(filepath)
+            view.run_command("revert")
+            return
+
         if not os.path.exists(filepath):
             with open(filepath, "w", encoding="utf-8") as f:
                 f.write("")
